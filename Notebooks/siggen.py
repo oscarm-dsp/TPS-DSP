@@ -19,7 +19,7 @@ def Senoidal(amplitud, frecuencia, fase, N, fs):
     
     #genero el eje de ordenadas de N muestras
     
-    y=np.sin(frecuencia * 2.0*np.pi*x)
+    y=amplitud * np.sin(frecuencia * 2.0*np.pi*x + fase)
     
     return x,y
 #%% Ruido blanco gausiano
