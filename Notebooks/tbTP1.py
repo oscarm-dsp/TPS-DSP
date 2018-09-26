@@ -66,31 +66,62 @@ def my_testbench():
     
     s=[]
     
+    t,s=sg.Senoidal(1,9*fs/N,0,N,fs)
     
-    t,sa=sg.Senoidal(1,9*fs/N,0,N,fs)
+    t,n=sg.Ruido(0.1,N,fs)
+    
+    sn=s+n
+    
+    snd=[]
+    
+    for i in range(N):
+        snd=np.append(snd,np.average(sn[int(10*np.floor(i/10)):int(10*np.floor(i/10)+10)]))
+
+    
+    snq4=inst.Cuantificar(snd,4)
+    snq4=snq4/8
+    snq4=snq4-np.average(snq4)
+
+    e4=sn-snq4
+    
+    snq8=inst.Cuantificar(snd,8)
+    snq8=snq8/128
+    snq8=snq8-np.average(snq8)
+    
+    e8=sn-snq8
+    
+    snq16=inst.Cuantificar(snd,16)
+    snq16=snq16/32768
+    snq16=snq16-np.average(snq16)
+    
+    e16=sn-snq16
+    
+    print("4bit")
+    print(np.average(e4))
+    print(np.var(e4))
+    print(np.std(e4))
+    print(np.sqrt(np.average(e4**2)))
     
     
+    print("8bit")
+    print(np.average(e8))
+    print(np.var(e8))
+    print(np.std(e8))
+    print(np.sqrt(np.average(e8**2)))
     
     
-    s=np.append(sa[:111],sa[56:111+56])
-    s=np.append(s,np.zeros(778))
-    
-    
-    inst.ShowSig(t,s)
-    
-    f,f1=inst.ShowFFT(s,N,fs)
-    
-    inst.ShowFFT(s,N,fs,1,"Señal Original",0,35)
-    
-    f2=f1**2
-    
-    print (np.sum(f2))
-    
-    print (f2[9])
-    
-    print(np.argmax(f2))
+    print("16bit")
+    print(np.average(e16))
+    print(np.var(e16))
+    print(np.std(e16))
+    print(np.sqrt(np.average(e16**2)))
     
 
+
+    
+    
+    
+   
 
 #%% Comienzo de nuestro script
     ##########################

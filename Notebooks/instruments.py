@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.fftpack
 import cmath as cm
-#%%
+#%% Genera y/o grafica la FFT de una señal
 def ShowFFT(sig,N,fs,show=0,titulo='',start=0,stop=0):
 
     # Number of samplepoints
@@ -55,9 +55,11 @@ def ShowSig(x,y,titulo=''):
 def NormAmp(x):
     res=x/max(x)
     return res
-#%%
-def Cuantificar(x,n):
-    res=np.floor(x*2**n)
+#%% cuantifica una señal con n bits
+def Cuantificar(s,n,fsq=0):
+    x=s-min(s)
+    x=x/max(x)  
+    res=np.floor(x*2**n)  
     return res
 #%%    
 def ShowHist(s,bins='auto'):
