@@ -23,9 +23,11 @@ import matplotlib as mpl
 # la siguiente línea solo afecta en caso que lo quisiéramos correr desde la línea de comandos
 mpl.use('Qt5Agg')
 
+import time
 import matplotlib.pyplot as plt
 import siggen as sg
 import instruments as inst
+
 ###################################
 ## Formas de incluir comentarios ##
 ###################################
@@ -58,29 +60,35 @@ def my_testbench():
     
     # Datos generales de la simulación
     fs = 1000.0 # frecuencia de muestreo (Hz)
-    N = 1000 # cantidad de muestras
+    N = 1000  # cantidad de muestras
     
     #x,tt=sg.Senoidal(1,5,0,N,fs)
     
-    t,noise=sg.Ruido(0.1,N,fs)
-
-    t,sen=sg.Senoidal(1,10,0,N,fs)
+    s=[]
     
-    t,tri=sg.Triang(1,10,0,0.1,N,fs)
     
-    t,cua=sg.Rectan(1,10,0,0.8,N,fs)
+    t,sa=sg.Senoidal(1,9*fs/N,0,N,fs)
     
-    s=sen
     
-    inst.ShowSig(t,s,'Señal')
     
-    inst.ShowFFT(s,N,fs)
     
-    inst.ShowHist(s,50)
-    #%% Presentación gráfica de los resultados
+    s=np.append(sa[:111],sa[56:111+56])
+    s=np.append(s,np.zeros(778))
     
- 
-
+    
+    inst.ShowSig(t,s)
+    
+    f,f1=inst.ShowFFT(s,N,fs)
+    
+    inst.ShowFFT(s,N,fs,1,"Señal Original",0,35)
+    
+    f2=f1**2
+    
+    print (np.sum(f2))
+    
+    print (f2[9])
+    
+    print(np.argmax(f2))
     
 
 
