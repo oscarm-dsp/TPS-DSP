@@ -34,7 +34,7 @@ def Ruido (varianza,N,fs)    :
     #y = np.array([], dtype=np.float).reshape(N,0)
     
     
-    y = np.sqrt(varianza) * np.random.rand(N,1).flatten()
+    y = np.sqrt(varianza) * 2*np.random.rand(N,1).flatten()
     
     y=y-np.average(y)
     

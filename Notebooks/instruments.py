@@ -2,7 +2,7 @@
 """
 Created on Wed Sep 12 21:20:16 2018
 
-@author: Oscarm
+@author: Oscar Maffei
 """
 #
 import numpy as np
@@ -60,7 +60,15 @@ def Cuantificar(s,n,fsq=0):
     x=s-min(s)
     x=x/max(x)  
     res=np.floor(x*2**n)  
+    
     return res
+
+#%% cuantifica una señal con n bits
+def CuantificarB(s,n,fsq=0):
+    res=np.floor(s*2**(n-1))/(2**(n-1))  
+    
+    return res
+
 #%%    
 def ShowHist(s,bins='auto'):
     
