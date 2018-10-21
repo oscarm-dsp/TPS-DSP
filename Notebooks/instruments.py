@@ -59,13 +59,13 @@ def NormAmp(x):
 def Cuantificar(s,n,fsq=0):
     x=s-min(s)
     x=x/max(x)  
-    res=np.floor(x*2**n)  
+    res=np.floor(x*(2**n))  
     
     return res
 
 #%% cuantifica una señal con n bits
 def CuantificarB(s,n,fsq=0):
-    res=np.floor(s*2**(n-1))/(2**(n-1))  
+    res=np.floor(s*(2**(n-1)))/(2**(n-1))  
     
     return res
 

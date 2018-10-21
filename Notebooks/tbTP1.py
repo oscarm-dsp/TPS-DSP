@@ -21,7 +21,7 @@ import numpy as np
 #import scipy.signal as sig
 import matplotlib as mpl
 # la siguiente línea solo afecta en caso que lo quisiéramos correr desde la línea de comandos
-mpl.use('Qt5Agg')
+#mpl.use('Qt5Agg')
 
 import time
 import matplotlib.pyplot as plt
@@ -65,63 +65,38 @@ def my_testbench():
     #x,tt=sg.Senoidal(1,5,0,N,fs)
     
     s=[]
-    
+        
     t,s=sg.Senoidal(1,9*fs/N,0,N,fs)
-    
+        
     t,n=sg.Ruido(0.1,N,fs)
+    sn= s+n
+    snd=sn    
     
-    sn=s+n
-    
-    snd=[]
-    
-    for i in range(N):
-        snd=np.append(snd,np.average(sn[int(10*np.floor(i/10)):int(10*np.floor(i/10)+10)]))
 
-    
     snq4=inst.Cuantificar(snd,4)
     snq4=snq4/8
-    snq4=snq4-np.average(snq4)
-
+    snq4=snq4-1
+    
     e4=sn-snq4
+    inst.ShowSig(t,snq4)
     
     snq8=inst.Cuantificar(snd,8)
     snq8=snq8/128
-    snq8=snq8-np.average(snq8)
-    
+    snq8=snq8-1
+        
     e8=sn-snq8
-    
+        
     snq16=inst.Cuantificar(snd,16)
     snq16=snq16/32768
-    snq16=snq16-np.average(snq16)
-    
+    snq16=snq16-1
+        
     e16=sn-snq16
     
-    print("4bit")
-    print(np.average(e4))
-    print(np.var(e4))
-    print(np.std(e4))
-    print(np.sqrt(np.average(e4**2)))
-    
-    
-    print("8bit")
-    print(np.average(e8))
-    print(np.var(e8))
-    print(np.std(e8))
-    print(np.sqrt(np.average(e8**2)))
-    
-    
-    print("16bit")
-    print(np.average(e16))
-    print(np.var(e16))
-    print(np.std(e16))
-    print(np.sqrt(np.average(e16**2)))
-    
-
-
-    
-    
-    
+    inst.ShowHist(e4)
+    inst.ShowHist(e8)
+    inst.ShowHist(e16)        
    
+    
 
 #%% Comienzo de nuestro script
     ##########################
