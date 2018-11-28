@@ -59,6 +59,7 @@ def NormAmp(x):
 def Cuantificar(s,n,fsq=0):
     x=s-min(s)
     x=x/max(x)  
+    
     res=np.floor(x*(2**n))  
     
     return res
