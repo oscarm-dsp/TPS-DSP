@@ -12,28 +12,35 @@ import scipy as sp
 import instruments as inst
 import spectrum as spc
 import z_plane as zp
+import siggen as sg
+import perio as per
 
-
-N=1000
+N=256
 fs=1000
 
-mat_struct = sio.loadmat('./ECG_TP4.mat')
-#
-ecg_one_lead =mat_struct['ecg_lead'].flatten()
-N = len(ecg_one_lead)
 
-#Media movil de 10 muestras para reducir el ruido
-ecgfil=np.convolve(ecg_one_lead,np.ones(10)/10)
+t=np.linspace(0,(N-1),N)
+th=np.random.uniform(-np.pi/50,np.pi/50,N)
+ns=np.random.normal(0,1,N)
 
-data =ecgfil
+s=5*np.sin(t*0.1*np.pi)+ns
 
-for i in range (int(N-1)):
-    data[i]=data[i]-data[i+1]
 
-print (np.argmax(data[0:500]))
-print (np.argmax(data[5000:1500]))
-print (np.argmax(data[1500:2500]))
-print (np.argmax(data[2500:3000]))
+plt.figure()
+plt.plot(s)
+#s=np.pad(s,1024,'constant')
+p=per.Periodograma(s)
+pdb=20* np.log10(p+0.000000001)
+
+W=np.linspace(0,2*np.pi,len(p))
+
+plt.figure()
+plt.plot(W,p)
+print (np.mean(p),np.var(p))
+
+
+
+#data=[[p.mean(),p.var()] for p in Pw]
 
 
 #400
