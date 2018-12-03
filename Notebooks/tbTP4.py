@@ -15,32 +15,32 @@ import z_plane as zp
 import siggen as sg
 import perio as per
 
-N=256
 fs=1000
 
+mat_struct = sio.loadmat('ECG_TP4.mat')
+#
+ecg_one_lead =mat_struct['ecg_lead'].flatten()
+N = len(ecg_one_lead)
 
-t=np.linspace(0,(N-1),N)
-th=np.random.uniform(-np.pi/50,np.pi/50,N)
-ns=np.random.normal(0,1,N)
-
-s=5*np.sin(t*0.1*np.pi)+ns
+qrs_det=mat_struct['qrs_detections'].flatten()
 
 
-plt.figure()
-plt.plot(s)
-#s=np.pad(s,1024,'constant')
-p=per.Periodograma(s)
-pdb=20* np.log10(p+0.000000001)
+#Media movil de 10 muestras para reducir el ruido
+ecgfil=np.convolve(ecg_one_lead,np.ones(10)/10)
 
-W=np.linspace(0,2*np.pi,len(p))
+data =ecgfil
 
-plt.figure()
-plt.plot(W,p)
-print (np.mean(p),np.var(p))
+hb_1 = mat_struct['heartbeat_pattern1'].flatten()
 
 
 
-#data=[[p.mean(),p.var()] for p in Pw]
+match=hb_1[::-1]
+
+beats=sig.lfilter(match,1,ecg_med)
+beats=np.clip(beats,0,max(beats))
+beats=beats/1.5e9
+beats=beats**2
+plt.plot (beats[455000:475000])
 
 
 #400
