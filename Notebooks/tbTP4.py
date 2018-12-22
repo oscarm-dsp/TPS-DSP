@@ -15,6 +15,27 @@ import z_plane as zp
 import siggen as sg
 import perio as per
 
+
+
+def BeatDet(x,th):
+    
+    n= []
+    start=0
+    for i in range(len(x)):
+        if start==0:
+            if x[i]>th: 
+                start=i
+        else:
+            if x[i]<th:
+                n.append(start + np.argmax(x[start:i]))
+                start=0
+            
+    return n
+    
+
+
+
+
 fs=1000
 
 mat_struct = sio.loadmat('ECG_TP4.mat')
@@ -28,20 +49,23 @@ qrs_det=mat_struct['qrs_detections'].flatten()
 #Media movil de 10 muestras para reducir el ruido
 ecgfil=np.convolve(ecg_one_lead,np.ones(10)/10)
 
-data =ecgfil
+data =ecgfil/max(ecgfil)
 
 hb_1 = mat_struct['heartbeat_pattern1'].flatten()
-
-
+hb_1=hb_1/max(hb_1)
 
 match=hb_1[::-1]
-
-beats=sig.lfilter(match,1,ecg_med)
+plt.plot (data[455000:475000])
+beats=sig.lfilter(match,1,data)
+plt.plot (beats[455000:475000])
 beats=np.clip(beats,0,max(beats))
-beats=beats/1.5e9
+beats=beats
 beats=beats**2
 plt.plot (beats[455000:475000])
 
+bt=BeatDet(beats[455000:475000],40)
+
+[plt.axvline (x,0,1,color='r',linestyle='--') for x in bt]
 
 #400
 #1920
